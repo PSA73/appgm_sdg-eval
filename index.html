@@ -646,49 +646,86 @@
         return "Sangat Tinggi";
     }
 
-    function submitForm() {
-        if (!validateStep(3)) return;
+    // Set your Web App URL here
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqD0FB_Uu6DOyCkSndvPjVDjrvhLGh-AXVryvozkM-1bklrcLAM87ey8nKR2ghiGe-/exec";
 
-        const nama = document.getElementById("nama").value.trim();
-        const org = document.getElementById("organisasi").value.trim();
-        const modul = document.getElementById("modul").value.trim();
-        const tarikh = document.getElementById("tarikh").value.trim();
+function submitForm() {
+    if (!validateStep(3)) return;
 
-        document.getElementById("displayNama").innerText = nama;
-        document.getElementById("displayOrganisasi").innerText = org;
-        document.getElementById("displayModul").innerText = modul;
-        document.getElementById("displayTarikh").innerText = tarikh;
+    const nama = document.getElementById("nama").value.trim();
+    const org = document.getElementById("organisasi").value.trim();
+    const modul = document.getElementById("modul").value.trim();
+    const tarikh = document.getElementById("tarikh").value.trim();
 
-        let totalPre = 0;
-        let totalPost = 0;
+    document.getElementById("displayNama").innerText = nama;
+    document.getElementById("displayOrganisasi").innerText = org;
+    document.getElementById("displayModul").innerText = modul;
+    document.getElementById("displayTarikh").innerText = tarikh;
 
-        for (let i = 1; i <= 10; i++) {
-            totalPre += parseInt(document.querySelector(`input[name="pre_q${i}"]:checked`).value);
-            totalPost += parseInt(document.querySelector(`input[name="post_q${i}"]:checked`).value);
-        }
+    let totalPre = 0;
+    let totalPost = 0;
+    let preAnswers = {};
+    let postAnswers = {};
 
-        const avgPre = (totalPre / 10).toFixed(2);
-        const avgPost = (totalPost / 10).toFixed(2);
-
-        let improvement = 0;
-        if (totalPre > 0) {
-            improvement = (((totalPost - totalPre) / totalPre) * 100).toFixed(1);
-        } else {
-            improvement = (totalPost * 20).toFixed(1);
-        }
-
-        document.getElementById("avgPreScore").innerText = `${avgPre} / 5.00`;
-        document.getElementById("avgPostScore").innerText = `${avgPost} / 5.00`;
-        document.getElementById("preLevel").innerText = getLevel(avgPre);
-        document.getElementById("postLevel").innerText = getLevel(avgPost);
-
-        const impText = improvement >= 0 ? `+${improvement}%` : `${improvement}%`;
-        document.getElementById("scoreImprovement").innerText = impText;
-        document.getElementById("scoreComparison").innerText = `Skor Purata meningkat daripada ${avgPre} kepada ${avgPost}.`;
-
-        showStep(4);
+    for (let i = 1; i <= 10; i++) {
+        let preVal = parseInt(document.querySelector(`input[name="pre_q${i}"]:checked`).value);
+        let postVal = parseInt(document.querySelector(`input[name="post_q${i}"]:checked`).value);
+        
+        totalPre += preVal;
+        totalPost += postVal;
+        
+        preAnswers[`Q${i}`] = preVal;
+        postAnswers[`Q${i}`] = postVal;
     }
 
+    const avgPre = (totalPre / 10).toFixed(2);
+    const avgPost = (totalPost / 10).toFixed(2);
+
+    let improvement = 0;
+    if (totalPre > 0) {
+        improvement = (((totalPost - totalPre) / totalPre) * 100).toFixed(1);
+    } else {
+        improvement = (totalPost * 20).toFixed(1);
+    }
+
+    document.getElementById("avgPreScore").innerText = `${avgPre} / 5.00`;
+    document.getElementById("avgPostScore").innerText = `${avgPost} / 5.00`;
+    document.getElementById("preLevel").innerText = getLevel(avgPre);
+    document.getElementById("postLevel").innerText = getLevel(avgPost);
+
+    const impText = improvement >= 0 ? `+${improvement}%` : `${improvement}%`;
+    document.getElementById("scoreImprovement").innerText = impText;
+    document.getElementById("scoreComparison").innerText = `Skor Purata meningkat daripada ${avgPre} kepada ${avgPost}.`;
+
+    // Data payload sent to Google Sheets
+    const payload = {
+        nama: nama,
+        organisasi: org,
+        modul: modul,
+        tarikh: tarikh,
+        avgPre: avgPre,
+        avgPost: avgPost,
+        improvement: improvement,
+        preAnswers: preAnswers,
+        postAnswers: postAnswers
+    };
+
+    // Send data to Google Apps Script
+    fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    }).then(() => {
+        console.log("Data sent to Google Sheet.");
+    }).catch(error => {
+        console.error("Error submitting data:", error);
+    });
+
+    showStep(4);
+}
     function exportCSV() {
         const nama = document.getElementById("nama").value;
         const org = document.getElementById("organisasi").value;
