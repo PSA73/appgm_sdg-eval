@@ -498,31 +498,113 @@
     document.getElementById('tarikh').valueAsDate = new Date();
 
     // Senarai Soalan Pre & Post
-    const preQuestions = [
-        "1. Tahap pengetahuan saya berkenaan konsep asas Matlamat Pembangunan Mampan (SDG).",
-        "2. Pemahaman saya mengenai peranan APPGM-SDG dalam pembangunan komuniti.",
-        "3. Pengetahuan saya mengenai pendekatan 3M (Melatih, Menghasilkan, Memantau).",
-        "4. Pemahaman saya tentang hubungkait projek komuniti dalam konteks Parlimen Jeli.",
-        "5. Pemahaman saya berkenaan kaitan antara projek kebun komuniti dengan matlamat SDG.",
-        "6. Pengetahuan saya tentang 3 teras dan 1 prinsip pembangunan mampan.",
-        "7. Pengetahuan saya tentang pelaksanaan projek anjuran APPGM-SDG ini.",
-        "8. Tahap kesediaan dan keyakinan saya untuk mengendalikan infrastruktur hidroponik solar.",
-        "9. Jangkaan saya terhadap kandungan Modul ini dengan keperluan komuniti.",
-        "10. Tahap kefahaman awal saya tentang faedah langsung projek kepada sosioekonomi asnaf."
-    ];
-
-    const postQuestions = [
-        "1. Peningkatan pengetahuan saya berkenaan konsep asas dan 17 Matlamat SDG.",
-        "2. Kejelasan pemahaman saya mengenai fungsi APPGM-SDG serta penyetempatan projek di peringkat Parlimen.",
-        "3. Kebolehan saya memahami serta menjelaskan pendekatan 3M (Melatih, Menghasilkan, Memantau).",
-        "4. Pemahaman saya terhadap teknologi sistem hidroponik solar dan kitaran penuaian.",
-        "5. Keupayaan saya menghubungkan projek kebun komuniti dengan pemetaan SDG 1, 2, 7, 8, 12 & 15.",
-        "6. Penyampaian dan penjelasan oleh penceramah adalah jelas, menarik, dan mudah difahami.",
-        "7. Bahan Modul yang disediakan amat membantu proses pembelajaran.",
-        "8. Kesesuaian tempat, kemudahan, serta suasana ruang latihan adalah selesa dan memuaskan.",
-        "9. Pengurusan masa serta penyelarasan sepanjang sesi ceramah dijalankan dengan baik.",
-        "10. Tahap keyakinan saya secara keseluruhan untuk menterjemahkan pengetahuan kepada tindakan."
-    ];
+    // 1. QUESTION BANK FOR ALL MODULES
+const moduleQuestions = {
+    "Modul 1": {
+        pre: [
+            "1. Tahap pengetahuan saya berkenaan konsep asas Matlamat Pembangunan Mampan (SDG).",
+            "2. Pemahaman saya mengenai peranan APPGM-SDG dalam pembangunan komuniti.",
+            "3. Pengetahuan saya mengenai pendekatan 3M (Melatih, Menghasilkan, Memantau).",
+            "4. Pemahaman saya tntang hubungkait projk komuniti dalam konteks Parlimen Jeli.",
+            "5. Pemahaman saya berkenaan kaitan antara projek kebun komuniti dengan matlamat SDG.",
+            "6. Pengetahuan saya tentang 3 teras dan 1 prinsip pembangunan mampan.",
+            "7. Pemahaman saya tentang pelaksanaan projek anjuran APPGM-SDG ini.",
+            "8. Tahap kesediaan saya untuk mengendalikan sistem hidroponik solar.",
+            "9. Jangkaan saya terhadap kandungan Modul ini dengan keperluan komuniti.",
+            "10. Tahap kefahaman awal saya tentang faedah langsung projek kepada sosioekonomi asnaf."
+        ],
+        post: [
+            "1. Peningkatan pengetahuan saya berkenaan konsep asas dan 17 Matlamat SDG.",
+            "2. Kejelasan pemahaman saya mengenai fungsi APPGM-SDG serta penyetempatan projek di peringkat Parlimen.",
+            "3. Kebolehan saya memahami serta menjelaskan pendekatan 3M (Melatih, Menghasilkan, Memantau).",
+            "4. Pemahaman saya terhadap kemudahan sistem hidroponik solar dalam projek ini.",
+            "5. Keupayaan saya menghubungkan projek kebun komuniti dengan pemetaan SDG 1, 2, 7, 8, 12 & 15.",
+            "6. Penyampaian dan penjelasan oleh penceramah adalah jelas dan mudah difahami.",
+            "7. Bahan penyampaian membantu proses pemahaman dan pembelajaran.",
+            "8. Kesesuaian tempat, kemudahan, serta suasana ruang latihan adalah selesa dan memuaskan.",
+            "9. Pengurusan masa serta penyelarasan sepanjang sesi ceramah dijalankan dengan baik.",
+            "10. Tahap keyakinan saya secara keseluruhan untuk menterjemahkan pengetahuan kepada tindakan."
+        ]
+    },
+    "Modul 2": {
+        pre: [
+            "1. [Modul 2 Pre] Tahap pengetahuan berkenaan definisi dan konsep asas keterjaminan makanan Modul 2...",
+            "2. [Modul 2 Pre] Pemahaman saya mengenai 4 cabaran utamam bekalan makanan.",
+            "3. [Modul 2 Pre] Pengetahuan saya berkenaan isu bekalan makanan tempatan.",
+            "4. [Modul 2 Pre] Tahap kefahaman saya tentang 3 syarat keterjaminan makanan.",
+            "5. [Modul 2 Pre] Pengetahuan saya berkenaan 4 teras utama keterjaminan makanan.",
+            "6. [Modul 2 Pre] Pemahaman saya mengenai maksud ketersediaan dan kebolehcapaian dalam konteks bekalan makanan.",
+            "7. [Modul 2 Pre] Pemahaman saya mengenai maksud penggunaan dan kestabilan dalam konteks bekalan makanan.",
+            "8. [Modul 2 Pre] Tahap kefahaman awal saya berkenaan penggunaan sistem hidroponik solar bagi penghasilan sayuran.",
+            "9. [Modul 2 Pre] Pengetahuan saya tentang spesifikasi fizikal dan teknik operasi sistem hidroponik solar.",
+            "10. [Modul 2 Pre] Tahap kefahaman saya entang potensi impak sosioekonomi projek kepada peserta asnaf dan komuniti."
+        ],
+        post: [
+            "1. [Modul 2 Post] Peningkatan pengetahuan saya berkenaan definisi dan konsep asas keterjaminan makanan.",
+            "2. [Modul 2 Post] Kejelasan pemahaman saya mengenai 4 cabaran utama bekalan makanan global dan tempatan.",
+            "3. [Modul 2 Post] Kebolehan saya memahami isu dan punca krisis bekalan makanan tempatan.",
+            "4. [Modul 2 Post] Pemahaman saya yang lebih jelas mengenai 3 syarat keterjaminan makanan isi rumah.",
+            "5. [Modul 2 Post] Keupayaan saya menghubungkaitkan 4 teras utama keterjaminan makanan dengan kebun komuniti.",
+            "6. [Modul 2 Post] Kejelasan pemahaman berkenaan teras ketersediaan dan kebolehcapaian.",
+            "7. [Modul 2 Post] Pemahaman saya mengenai kelebihan penghasilan sayuran dengan sistem hidroponik solar.",
+            "8. [Modul 2 Post] Penyampaian dan penjelasan oleh penceramah adalah sangat jelas dan mudah difahami.",
+            "9. [Modul 2 Post] Kesesuaian tempat, kemudahan, serta suasana ruang latihan adalah selesa dan memuaskan.",
+            "10. [Modul 2 Post] Tahap kesediaan dan keyakinan saya untuk menterjemahkan pemahaman kepada tindakan keterjaminan makanan komuniti."
+        ]
+    },
+    "Modul 3": {
+        pre: [
+            "1. [Modul 3 Pre] Soalan 1...",
+            "2. [Modul 3 Pre] Soalan 2...",
+            "3. [Modul 3 Pre] Soalan 3...",
+            "4. [Modul 3 Pre] Soalan 4...",
+            "5. [Modul 3 Pre] Soalan 5...",
+            "6. [Modul 3 Pre] Soalan 6...",
+            "7. [Modul 3 Pre] Soalan 7...",
+            "8. [Modul 3 Pre] Soalan 8...",
+            "9. [Modul 3 Pre] Soalan 9...",
+            "10. [Modul 3 Pre] Soalan 10..."
+        ],
+        post: [
+            "1. [Modul 3 Post] Soalan 1...",
+            "2. [Modul 3 Post] Soalan 2...",
+            "3. [Modul 3 Post] Soalan 3...",
+            "4. [Modul 3 Post] Soalan 4...",
+            "5. [Modul 3 Post] Soalan 5...",
+            "6. [Modul 3 Post] Soalan 6...",
+            "7. [Modul 3 Post] Soalan 7...",
+            "8. [Modul 3 Post] Soalan 8...",
+            "9. [Modul 3 Post] Soalan 9...",
+            "10. [Modul 3 Post] Soalan 10..."
+        ]
+    },
+    "Modul 4": {
+        pre: [
+            "1. [Modul 4 Pre] Soalan 1...",
+            "2. [Modul 4 Pre] Soalan 2...",
+            "3. [Modul 4 Pre] Soalan 3...",
+            "4. [Modul 4 Pre] Soalan 4...",
+            "5. [Modul 4 Pre] Soalan 5...",
+            "6. [Modul 4 Pre] Soalan 6...",
+            "7. [Modul 4 Pre] Soalan 7...",
+            "8. [Modul 4 Pre] Soalan 8...",
+            "9. [Modul 4 Pre] Soalan 9...",
+            "10. [Modul 4 Pre] Soalan 10..."
+        ],
+        post: [
+            "1. [Modul 4 Post] Soalan 1...",
+            "2. [Modul 4 Post] Soalan 2...",
+            "3. [Modul 4 Post] Soalan 3...",
+            "4. [Modul 4 Post] Soalan 4...",
+            "5. [Modul 4 Post] Soalan 5...",
+            "6. [Modul 4 Post] Soalan 6...",
+            "7. [Modul 4 Post] Soalan 7...",
+            "8. [Modul 4 Post] Soalan 8...",
+            "9. [Modul 4 Post] Soalan 9...",
+            "10. [Modul 4 Post] Soalan 10..."
+        ]
+    }
+};
 
     function renderQuestions(questions, containerId, prefix) {
         const container = document.getElementById(containerId);
@@ -559,7 +641,25 @@
 
     renderQuestions(preQuestions, "preQuestionsContainer", "pre");
     renderQuestions(postQuestions, "postQuestionsContainer", "post");
+// 2. FUNCTION TO LOAD QUESTIONS BASED ON SELECTED MODULE
+function loadQuestionsForSelectedModule() {
+    const selectedModul = document.getElementById("modul").value;
+    
+    // Default to Modul 1 if the selected key isn't found
+    const currentQuestions = moduleQuestions[selectedModul] || moduleQuestions["Modul 1"];
 
+    renderQuestions(currentQuestions.pre, "preQuestionsContainer", "pre");
+    renderQuestions(currentQuestions.post, "postQuestionsContainer", "post");
+    
+    // Recalculate progress bar
+    updateProgress();
+}
+
+// 3. ATTACH EVENT LISTENER TO MODUL DROPDOWN
+document.getElementById("modul").addEventListener("change", loadQuestionsForSelectedModule);
+
+// 4. INITIAL LOAD ON PAGE VISITED
+loadQuestionsForSelectedModule();
     let currentStep = 1;
 
     function updateProgress() {
