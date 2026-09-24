@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borang Penilaian Pre & Post - APPGM-SDG</title>
+    <style>
+        :root {
+            --primary-color: #1b4332;    /* Hijau Gelap */
+            --primary-dark: #081c15;     /* Hijau Lebih Gelap */
+            --secondary-color: #4a2c11;   /* Coklat Tanah Gelap */
+            --accent-brown: #7f4f24;      /* Coklat Tanah Aksentuasi */
+            --bg-color: #f5f2eb;          /* Warna Latar Earthy/Nisbah Tanah */
+            --card-bg: #ffffff;
+            --text-color: #2b2b2b;
+            --border-color: #d8d0c5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(74, 44, 17, 0.12);
+            padding: 30px;
+            box-sizing: border-box;
+            border-top: 6px solid var(--primary-color);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--secondary-color);
+            font-size: 14px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background-color: #e5dfd5;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            height: 12px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        /* Step Indicators */
+        .steps-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .step-dot {
+            flex: 1;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            color: #8c8275;
+            padding: 8px;
+            border-bottom: 3px solid #e5dfd5;
+        }
+
+        .step-dot.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .step-dot.completed {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        /* Form Step Content */
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            font-size: 18px;
+            margin-top: 0;
+            border-left: 4px solid var(--accent-brown);
+            padding-left: 10px;
+        }
+
+        /* Question Box */
+        .question-card {
+            background: #faf8f5;
+            border: 1px solid #e8e2d8;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+
+        .question-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        /* Likert Scale Buttons */
+        .likert-scale {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .likert-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .likert-option input[type="radio"] {
+            display: none;
+        }
+
+        .likert-option label {
+            display: block;
+            padding: 10px 0;
+            background: #ffffff;
+            border: 1px solid #c8bfb0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            color: var(--secondary-color);
+        }
+
+        .likert-option input[type="radio"]:checked + label {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 6px rgba(27, 67, 50, 0.4);
+        }
+
+        .likert-option label:hover {
+            border-color: var(--accent-brown);
+            background-color: #f0ece1;
+        }
+
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #776e65;
+            margin-top: 6px;
+            padding: 0 4px;
+        }
+
+        /* Input Controls */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--secondary-color);
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #c8bfb0;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background-color: #fff;
+            color: #2b2b2b;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(27, 67, 50, 0.3);
+        }
+
+        .input-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .input-row .input-group {
+            flex: 1;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-next, .btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-next:hover, .btn-submit:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-prev {
+            background-color: #e5dfd5;
+            color: var(--secondary-color);
+        }
+
+        .btn-prev:hover {
+            background-color: #d8d0c5;
+        }
+
+        /* Card Maklumat Peserta di Bahagian Keputusan */
+        .info-card {
+            background: #faf8f5;
+            border: 1px solid #e8e2d8;
+            border-left: 5px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .info-item strong {
+            color: var(--accent-brown);
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-item span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Results Box */
+        .results-box {
+            background: #f0ece1;
+            border: 1px solid #d8d0c5;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .results-score {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .summary-table th, .summary-table td {
+            border: 1px solid #d8d0c5;
+            padding: 10px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .summary-table th {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .likert-scale {
+                flex-wrap: wrap;
+            }
+            .likert-option {
+                flex: 1 0 30%;
+                margin-bottom: 5px;
+            }
+            .input-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Borang Penilaian Pre & Post APPGM-SDG</h1>
+        <p>Penilaian Keberkesanan Sesi Latihan & Pembangunan Komuniti</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Steps Indicator -->
+    <div class="steps-indicator">
+        <div class="step-dot active" id="dot-1">1. Maklumat</div>
+        <div class="step-dot" id="dot-2">2. Pre-Evaluation</div>
+        <div class="step-dot" id="dot-3">3. Post-Evaluation</div>
+        <div class="step-dot" id="dot-4">4. Keputusan</div>
+    </div>
+
+    <form id="evalForm">
+        <!-- BAHAGIAN 1: MAKLUMAT PESERTA -->
+        <div class="form-step active" id="step-1">
+            <h2>1. Maklumat Peserta & Sesi</h2>
+            <div class="input-group">
+                <label for="nama">Nama Penuh Peserta:</label>
+                <input type="text" id="nama" name="nama" placeholder="Masukkan nama penuh anda" required>
+            </div>
+            <div class="input-group">
+                <label for="organisasi">Kawasan Parlimen / Komuniti:</label>
+                <input type="text" id="organisasi" name="organisasi" placeholder="Contoh: Kategori Asnaf / Komuniti Gemang" required>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="modul">Modul #:</label>
+                    <select id="modul" name="modul" required>
+                        <option value="Modul 1">Modul 1</option>
+                        <option value="Modul 2">Modul 2</option>
+                        <option value="Modul 3">Modul 3</option>
+                        <option value="Modul 4">Modul 4</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="tarikh">Tarikh Sesi:</label>
+                    <input type="date" id="tarikh" name="tarikh" required>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <div></div>
+                <button type="button" class="btn btn-next" onclick="nextStep(1)">Seterusnya &raquo;</button>
+            </div>
+        </div>
+
+        <!-- BAHAGIAN 2: PRE-EVALUATION -->
+        <div class="form-step" id="step-2">
+            <h2>2. Bahagian A: Penilaian Pra-Sesi (Pre-Evaluation)</h2>
+            <p style="font-size: 13px; color: #666; margin-bottom: 20px;">
+                Sila nilaikan tahap pengetahuan anda <strong>SEBELUM</strong> mengikuti modul latihan ini (Skala 0 = Tiada Pengetahuan, 5 = Sangat Tinggi).
+            </p>
+
+            <div id="preQuestionsContainer"></div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-prev" onclick="prevStep(2)">&laquo; Kembali</button>
+                <button type="button" class="btn btn-next" onclick="nextStep(2)">Seterusnya &raquo;</button>
+            </div>
+        </div>
+
+        <!-- BAHAGIAN 3: POST-EVALUATION -->
+        <div class="form-step" id="step-3">
+            <h2>3. Bahagian B: Penilaian Pasca-Sesi (Post-Evaluation)</h2>
+            <p style="font-size: 13px; color: #666; margin-bottom: 20px;">
+                Sila nilaikan tahap pengetahuan dan kepuasan anda <strong>SELEPAS</strong> mengikuti modul latihan ini (Skala 0 = Sangat Rendah/Tidak Setuju, 5 = Sangat Tinggi/Sangat Setuju).
+            </p>
+
+            <div id="postQuestionsContainer"></div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-prev" onclick="prevStep(3)">&laquo; Kembali</button>
+                <button type="button" class="btn btn-submit" onclick="submitForm()">Hantar & Lihat Analisis</button>
+            </div>
+        </div>
+
+        <!-- BAHAGIAN 4: KEPUTUSAN & ANALISIS -->
+        <div class="form-step" id="step-4">
+            <h2>4. Ringkasan Keputusan & Analisis Penilaian</h2>
+            
+            <!-- MAKLUMAT PESERTA, MODUL & TARIKH -->
+            <div class="info-card">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Nama Peserta</strong>
+                        <span id="displayNama">-</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Kawasan / Komuniti</strong>
+                        <span id="displayOrganisasi">-</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Modul #</strong>
+                        <span id="displayModul">-</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Tarikh Sesi</strong>
+                        <span id="displayTarikh">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-box">
+                <div style="font-size: 14px; color: #555;">Peningkatan Pengetahuan Keseluruhan</div>
+                <div class="results-score" id="scoreImprovement">+0%</div>
+                <div id="scoreComparison" style="font-size: 13px; color: #333;"></div>
+            </div>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Bahagian Penilaian</th>
+                        <th>Skor Purata (Skala 0-5)</th>
+                        <th>Tahap Kuantitatif</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Pra-Sesi (Pre-Evaluation)</strong></td>
+                        <td id="avgPreScore">0.00 / 5.00</td>
+                        <td id="preLevel">-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pasca-Sesi (Post-Evaluation)</strong></td>
+                        <td id="avgPostScore">0.00 / 5.00</td>
+                        <td id="postLevel">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-prev" onclick="exportCSV()">Muat Turun Data (CSV)</button>
+                <button type="button" class="btn btn-next" onclick="window.print()">Cetak Ringkasan</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Tetapkan Tarikh Hari Ini Secara Semulajadi
+    document.getElementById('tarikh').valueAsDate = new Date();
+
+    // Senarai Soalan Pre & Post
+    const preQuestions = [
+        "1. Tahap pengetahuan saya berkenaan konsep asas Matlamat Pembangunan Mampan (SDG).",
+        "2. Pemahaman saya mengenai peranan APPGM-SDG dalam pembangunan komuniti.",
+        "3. Pengetahuan saya mengenai pendekatan 3M (Melatih, Menghasilkan, Memantau).",
+        "4. Pemahaman saya tentang hubungkait projek komuniti dalam konteks Parlimen Jeli.",
+        "5. Pemahaman saya berkenaan kaitan antara projek kebun komuniti dengan matlamat SDG.",
+        "6. Pengetahuan saya tentang 3 teras dan 1 prinsip pembangunan mampan.",
+        "7. Pengetahuan saya tentang pelaksanaan projek anjuran APPGM-SDG ini.",
+        "8. Tahap kesediaan dan keyakinan saya untuk mengendalikan infrastruktur hidroponik solar.",
+        "9. Jangkaan saya terhadap kandungan Modul ini dengan keperluan komuniti.",
+        "10. Tahap kefahaman awal saya tentang faedah langsung projek kepada sosioekonomi asnaf."
+    ];
+
+    const postQuestions = [
+        "1. Peningkatan pengetahuan saya berkenaan konsep asas dan 17 Matlamat SDG.",
+        "2. Kejelasan pemahaman saya mengenai fungsi APPGM-SDG serta penyetempatan projek di peringkat Parlimen.",
+        "3. Kebolehan saya memahami serta menjelaskan pendekatan 3M (Melatih, Menghasilkan, Memantau).",
+        "4. Pemahaman saya terhadap teknologi sistem hidroponik solar dan kitaran penuaian.",
+        "5. Keupayaan saya menghubungkan projek kebun komuniti dengan pemetaan SDG 1, 2, 7, 8, 12 & 15.",
+        "6. Penyampaian dan penjelasan oleh penceramah adalah jelas, menarik, dan mudah difahami.",
+        "7. Bahan Modul yang disediakan amat membantu proses pembelajaran.",
+        "8. Kesesuaian tempat, kemudahan, serta suasana ruang latihan adalah selesa dan memuaskan.",
+        "9. Pengurusan masa serta penyelarasan sepanjang sesi ceramah dijalankan dengan baik.",
+        "10. Tahap keyakinan saya secara keseluruhan untuk menterjemahkan pengetahuan kepada tindakan."
+    ];
+
+    function renderQuestions(questions, containerId, prefix) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+
+        questions.forEach((q, idx) => {
+            const qNum = idx + 1;
+            let optionsHtml = "";
+
+            for (let val = 0; val <= 5; val++) {
+                optionsHtml += `
+                    <div class="likert-option">
+                        <input type="radio" id="${prefix}_q${qNum}_${val}" name="${prefix}_q${qNum}" value="${val}" required onchange="updateProgress()">
+                        <label for="${prefix}_q${qNum}_${val}">${val}</label>
+                    </div>
+                `;
+            }
+
+            const qCard = `
+                <div class="question-card">
+                    <div class="question-title">${q}</div>
+                    <div class="likert-scale">
+                        ${optionsHtml}
+                    </div>
+                    <div class="scale-labels">
+                        <span>0 - Sangat Rendah / Tiada</span>
+                        <span>5 - Sangat Tinggi / Setuju</span>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += qCard;
+        });
+    }
+
+    renderQuestions(preQuestions, "preQuestionsContainer", "pre");
+    renderQuestions(postQuestions, "postQuestionsContainer", "post");
+
+    let currentStep = 1;
+
+    function updateProgress() {
+        const totalInputs = 4 + 10 + 10;
+        let filledInputs = 0;
+
+        if (document.getElementById("nama").value.trim() !== "") filledInputs++;
+        if (document.getElementById("organisasi").value.trim() !== "") filledInputs++;
+        if (document.getElementById("modul").value.trim() !== "") filledInputs++;
+        if (document.getElementById("tarikh").value.trim() !== "") filledInputs++;
+
+        for (let i = 1; i <= 10; i++) {
+            if (document.querySelector(`input[name="pre_q${i}"]:checked`)) filledInputs++;
+            if (document.querySelector(`input[name="post_q${i}"]:checked`)) filledInputs++;
+        }
+
+        const percentage = Math.round((filledInputs / totalInputs) * 100);
+        document.getElementById("progressBar").style.width = percentage + "%";
+    }
+
+    document.getElementById("nama").addEventListener("input", updateProgress);
+    document.getElementById("organisasi").addEventListener("input", updateProgress);
+    document.getElementById("modul").addEventListener("change", updateProgress);
+    document.getElementById("tarikh").addEventListener("change", updateProgress);
+
+    function showStep(step) {
+        document.querySelectorAll(".form-step").forEach(el => el.classList.remove("active"));
+        document.getElementById(`step-${step}`).classList.add("active");
+
+        for (let i = 1; i <= 4; i++) {
+            const dot = document.getElementById(`dot-${i}`);
+            dot.classList.remove("active", "completed");
+            if (i < step) dot.classList.add("completed");
+            if (i === step) dot.classList.add("active");
+        }
+        currentStep = step;
+        window.scrollTo(0, 0);
+    }
+
+    function validateStep(step) {
+        if (step === 1) {
+            const nama = document.getElementById("nama").value.trim();
+            const org = document.getElementById("organisasi").value.trim();
+            const modul = document.getElementById("modul").value.trim();
+            const tarikh = document.getElementById("tarikh").value.trim();
+
+            if (!nama || !org || !modul || !tarikh) {
+                alert("Sila lengkapkan semua maklumat peserta, kawasan, modul, dan tarikh.");
+                return false;
+            }
+        } else if (step === 2) {
+            for (let i = 1; i <= 10; i++) {
+                if (!document.querySelector(`input[name="pre_q${i}"]:checked`)) {
+                    alert(`Sila jawab soalan Pra-Sesi No. ${i}`);
+                    return false;
+                }
+            }
+        } else if (step === 3) {
+            for (let i = 1; i <= 10; i++) {
+                if (!document.querySelector(`input[name="post_q${i}"]:checked`)) {
+                    alert(`Sila jawab soalan Pasca-Sesi No. ${i}`);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    function nextStep(step) {
+        if (validateStep(step)) {
+            showStep(step + 1);
+        }
+    }
+
+    function prevStep(step) {
+        showStep(step - 1);
+    }
+
+    function getLevel(score) {
+        if (score < 1.5) return "Sangat Rendah";
+        if (score < 2.5) return "Rendah";
+        if (score < 3.5) return "Sederhana";
+        if (score < 4.5) return "Tinggi";
+        return "Sangat Tinggi";
+    }
+
+    function submitForm() {
+        if (!validateStep(3)) return;
+
+        const nama = document.getElementById("nama").value.trim();
+        const org = document.getElementById("organisasi").value.trim();
+        const modul = document.getElementById("modul").value.trim();
+        const tarikh = document.getElementById("tarikh").value.trim();
+
+        document.getElementById("displayNama").innerText = nama;
+        document.getElementById("displayOrganisasi").innerText = org;
+        document.getElementById("displayModul").innerText = modul;
+        document.getElementById("displayTarikh").innerText = tarikh;
+
+        let totalPre = 0;
+        let totalPost = 0;
+
+        for (let i = 1; i <= 10; i++) {
+            totalPre += parseInt(document.querySelector(`input[name="pre_q${i}"]:checked`).value);
+            totalPost += parseInt(document.querySelector(`input[name="post_q${i}"]:checked`).value);
+        }
+
+        const avgPre = (totalPre / 10).toFixed(2);
+        const avgPost = (totalPost / 10).toFixed(2);
+
+        let improvement = 0;
+        if (totalPre > 0) {
+            improvement = (((totalPost - totalPre) / totalPre) * 100).toFixed(1);
+        } else {
+            improvement = (totalPost * 20).toFixed(1);
+        }
+
+        document.getElementById("avgPreScore").innerText = `${avgPre} / 5.00`;
+        document.getElementById("avgPostScore").innerText = `${avgPost} / 5.00`;
+        document.getElementById("preLevel").innerText = getLevel(avgPre);
+        document.getElementById("postLevel").innerText = getLevel(avgPost);
+
+        const impText = improvement >= 0 ? `+${improvement}%` : `${improvement}%`;
+        document.getElementById("scoreImprovement").innerText = impText;
+        document.getElementById("scoreComparison").innerText = `Skor Purata meningkat daripada ${avgPre} kepada ${avgPost}.`;
+
+        showStep(4);
+    }
+
+    function exportCSV() {
+        const nama = document.getElementById("nama").value;
+        const org = document.getElementById("organisasi").value;
+        const modul = document.getElementById("modul").value;
+        const tarikh = document.getElementById("tarikh").value;
+
+        let csv = "Nama,Komuniti,Modul,Tarikh,Bahagian,Soalan,Skor\n";
+
+        for (let i = 1; i <= 10; i++) {
+            const valPre = document.querySelector(`input[name="pre_q${i}"]:checked`).value;
+            csv += `"${nama}","${org}","${modul}","${tarikh}","Pre-Evaluation","Q${i}",${valPre}\n`;
+        }
+        for (let i = 1; i <= 10; i++) {
+            const valPost = document.querySelector(`input[name="post_q${i}"]:checked`).value;
+            csv += `"${nama}","${org}","${modul}","${tarikh}","Post-Evaluation","Q${i}",${valPost}\n`;
+        }
+
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.setAttribute("download", `Penilaian_${modul.replace(/\s+/g, '')}_${nama.replace(/\s+/g, '_')}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+
+</body>
+</html>
